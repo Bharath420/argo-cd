@@ -37,7 +37,13 @@ func LoadFlags() error {
 			}
 			key = strings.TrimPrefix(opt, "--")
 		case key != "":
-			flags[key] = opt
+			// Handle multiple values for the same flag (e.g., multiple --header flags)
+    		// by concatenating them with commas, which is the expected format
+			if existingVal, exists := flags[key]; exists {
+        		flags[key] = existingVal + "," + opt
+    		} else {
+        		flags[key] = opt
+    		}
 			key = ""
 		default:
 			return errors.New("ARGOCD_OPTS invalid at '" + opt + "'")
