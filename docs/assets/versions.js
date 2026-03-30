@@ -139,10 +139,13 @@ window.addEventListener("DOMContentLoaded", function() {
   var headerHeight = document.getElementsByClassName("md-header")[0].offsetHeight;
   const currentVersion = getCurrentVersion();
   if (currentVersion && currentVersion !== "stable") {
+    // Replace version in current path to redirect to the same page in stable version
+    // This preserves user context instead of redirecting to docs home page
+    const currentPath = window.location.pathname.replace(VERSION_REGEX, '/en/stable/');
     if (currentVersion === "latest") {
-      document.querySelector("div[data-md-component=announce]").innerHTML = "<div id='announce-msg'>You are viewing the docs for an unreleased version of Argo CD, <a href='https://argo-cd.readthedocs.io/en/stable/'>view the latest stable version.</a></div>";
+      document.querySelector("div[data-md-component=announce]").innerHTML = "<div id='announce-msg'>You are viewing the docs for an unreleased version of Argo CD, <a href='" + currentPath + "'>view the latest stable version.</a></div>";
     } else {
-      document.querySelector("div[data-md-component=announce]").innerHTML = "<div id='announce-msg'>You are viewing the docs for a previous version of Argo CD, <a href='https://argo-cd.readthedocs.io/en/stable/'>view the latest stable version.</a></div>";
+      document.querySelector("div[data-md-component=announce]").innerHTML = "<div id='announce-msg'>You are viewing the docs for a previous version of Argo CD, <a href='" + currentPath + "'>view the latest stable version.</a></div>";
     }
     var bannerHeight = document.getElementById('announce-msg').offsetHeight + margin;
     document.querySelector("header.md-header").style.top = bannerHeight + "px";
